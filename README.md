@@ -100,7 +100,7 @@ parseCSV(csv_text, [可选]delimiter)
 > csv_text：要解析的CSV文件文本。
 > delimiter : CSV文件的分隔符，可以不填，默认为","。
 
-![image-20241221164314904](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20241221164314904.png)
+![image-20241221164314904](assert\1-1.png)
 
 **警告：**
 
@@ -137,7 +137,7 @@ parseLine(line, delimiter)
 
 writeCSV函数可以将二维列表表示的表格保存为CSV文件。
 
-![image-20241221164739331](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20241221164739331.png) 
+![image-20241221164739331](assert/3-1.png) 
 
 注意，由于各编程语言的IO逻辑不同，不同实现存在一定差异：
 
@@ -169,15 +169,15 @@ fixLineLength (csv_sheet)
 
 例如，下面这个表格各行长度不同。
 
-![image-20241221165142136](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20241221165142136.png) 
+![image-20241221165142136](assert/4-1.png) 
 
 我们可以使用fixLineLength进行修复
 
-![image-20241221165155778](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20241221165155778.png)
+![image-20241221165155778](assert/4-2.png)
 
 把结果保存为CSV文件再打开，可以看到表格的每一行长度都变为了5。
 
-![image-20241221165203548](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20241221165203548.png) 
+![image-20241221165203548](assert/4-3.png) 
 
 
 
@@ -187,11 +187,11 @@ fixLineLength (csv_sheet)
 
 例如，对于一个分隔符是”.”的CSV文件，可以使用fixCSV函数把它转换为常见的以逗号为分隔符的CSV文件。
 
-![image-20241221165533896](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20241221165533896.png) 
+![image-20241221165533896](assert/5-1.png) 
 
 如图，使用Python实现的fixCSV函数，输入源文件地址和源文件分隔符，即可在当前路径输出转换成的“output.csv”。
 
-![image-20241221165542191](C:\Users\Admin\AppData\Roaming\Typora\typora-user-images\image-20241221165542191.png)
+![image-20241221165542191](assert/5-2.png)
 
 **注意，由于各编程语言IO操作的逻辑不同，不同实现可能会有一定差异。**
 
@@ -219,7 +219,7 @@ fixLineLength (csv_sheet)
 >
 > target_line_break：输出文件的换行符。可以省略，默认值为“\n”。
 
-### 
+
 
 
 
