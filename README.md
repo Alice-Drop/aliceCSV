@@ -99,6 +99,22 @@ parseCSV(csv_text, [optional]delimiter)
 > `csv_text`: The text of the CSV file to be parsed.
 > `delimiter`: The delimiter of the CSV file. Optional, default is `","`.
 
+![image-20241221164314904](assert/1-1.png)
+
+**Warning:**
+
+If you encounter issues processing CSV files like this one, it might be due to an extra space following the delimiter `","`. In such cases, the actual delimiter would be `", "`.
+
+```
+name, gender, height, address
+John, male, 175cm, "123 Main Street, New York, USA"
+Emily, female, 160cm, "45 Oxford Road, London, UK"
+Michael, male, 180cm, "10 Rue de la Paix, Paris, France"
+Sophia, female, 165cm, "25 Alexanderplatz, Berlin, Germany"
+```
+
+You can learn more about it in  [**5. Format Conversion**](#5. Format Conversion).
+
 ------
 
 ### 2. Parse a Specific Line of a CSV File
@@ -118,7 +134,7 @@ parseLine(line, delimiter)
 
 The `writeCSV` function can save a table represented as a two-dimensional list into a CSV file.
 
-![image-20241221164739331](assert/3-1.png)
+![image-20241221164739331](assert/3-1.png) 
 
 **Note: Due to differences in I/O operations across programming languages, there are slight differences among implementations:**
 
@@ -178,7 +194,7 @@ For example, for a CSV file with a delimiter of `"."`, you can use the `fixCSV` 
 
 As shown, using the Python implementation of the `fixCSV` function, input the source file path and source file delimiter to output the converted `"output.csv"` file in the current path.
 
-![image-20241221165542191](assert/5-2.png)
+![image-20241221165542191](assert/5-2.png) 
 
 **Note: Due to variations in the logic of I/O operations across programming languages, implementations may differ slightly.**
 

@@ -100,11 +100,11 @@ parseCSV(csv_text, [可选]delimiter)
 > csv_text：要解析的CSV文件文本。
 > delimiter : CSV文件的分隔符，可以不填，默认为","。
 
-![image-20241221164314904](assert\1-1.png)
+![image-20241221164314904](assert/1-1.png)
 
 **警告：**
 
-1.如果你发现无法正确处理像这样的CSV文件，这可能是因为在分隔符","后面多了一个空格，所以实际上分隔符是", "。
+如果发现无法正确处理像这样的CSV文件，这可能是因为在分隔符","后面多了一个空格，所以实际上分隔符是", "。
 
 ```
 name, gender, height, address
@@ -114,9 +114,7 @@ Michael, male, 180cm, "10 Rue de la Paix, Paris, France"
 Sophia, female, 165cm, "25 Alexanderplatz, Berlin, Germany"
 ```
 
-
-
-如果您修复它或了解更多信息，您可以转到第四部分 [**4.将 CSV 文件转换为其他格式**](https://github.com/Alicedrop/aliceCSV/blob/main/README.md#4convert-csv-files-into-other-formats) .
+如果你想了解更多信息，可以查看 [**5. 格式转换**](#5. 格式转换) .
 
 
 
@@ -139,9 +137,9 @@ writeCSV函数可以将二维列表表示的表格保存为CSV文件。
 
 ![image-20241221164739331](assert/3-1.png) 
 
-注意，由于各编程语言的IO逻辑不同，不同实现存在一定差异：
+**注意，由于各编程语言的IO逻辑不同，不同实现存在一定差异：**
 
-与Python和C++实现不同，JavaScript实现的writeCSV函数返回一个blob形式的CSV文件，而不是直接写入到硬盘。
+**与Python和C++实现不同，JavaScript实现的writeCSV函数返回一个blob形式的CSV文件，而不是直接写入到硬盘。**
 
 函数需要的参数和对应的含义如下： 
 
@@ -191,7 +189,7 @@ fixLineLength (csv_sheet)
 
 如图，使用Python实现的fixCSV函数，输入源文件地址和源文件分隔符，即可在当前路径输出转换成的“output.csv”。
 
-![image-20241221165542191](assert/5-2.png)
+![image-20241221165542191](assert/5-2.png) 
 
 **注意，同样由于各编程语言IO操作的逻辑不同，不同实现可能会有一定差异。**
 
