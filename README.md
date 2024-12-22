@@ -1,230 +1,217 @@
-# aliceCSV -- 简洁易用的跨平台csv 模块
+# aliceCSV -- Simple and Cross-Platform CSV Module
 
+[中文版 / Chinese Version](#)
 
+**aliceCSV** is a simple, user-friendly, and cross-platform CSV module.
 
-**aliceCSV -- 一个简洁易用的跨平台csv模块**。
+This module allows you to operate **CSV files as two-dimensional tables** easily and convert them into other formats with minimal effort. It is lightweight, has no dependencies, and is more intuitive compared to the built-in CSV libraries in Python and other languages.
 
-此模块可以简单地将CSV 文件**作为二维表格**进行操作，并能够轻松地**将它们转换为**其他形式。
+------
 
-它易于使用，没有任何依赖库。比起Python自带的csv库等，它会相对更直观、方便。
+## Overview
 
-## 概述
+aliceCSV is a cross-platform and cross-language CSV parsing software. It simplifies handling CSV files in software development by converting them into universal 2D arrays/lists. The module includes **error correction** and **format conversion** capabilities.
 
-跨平台的AliceCSV解析软件是一款跨平台、跨编程语言的对CSV文件进行操作的软件，可以把CSV解析为通用的二维列表/数组，简化了软件开发中对CSV文件操作的过程。软件还包含格式纠正和格式转换的功能。
+The software is implemented in **C++**, **Python**, and **JavaScript**, corresponding to use cases in embedded systems and applications, data processing, and web front-end development, which covered most development needs.
 
+The software has the capability to handle non-standard CSV files and is optimized for common errors encountered when handling CSV files. It strives to **restore the original intent of the author** when a file contains formatting errors.
 
-软件包含了**C++**、**Python**和**JavaScript**的实现，分别对应嵌入式软件和应用程序、数据处理和网页前端用途，可覆盖大多数开发用途。
+------
 
-软件具有兼容不规范的CSV文件的能力，针对用户在操作CSV文件时常见的错误进行了优化，在发现文件包含格式错误时能__尽可能还原作者原本的意图__。
+## Features
 
+In addition to being simple and easy to use, one of aliceCSV's major features is its **strong compatibility with CSV files that do not conform to RFC 4180 or have formatting errors.**
 
-
-## 特色
-
-除了简单易用外，aliceCSV的一大特色是 对不符合 RFC 4180 或格式有误的 CSV文件 具有**强大的兼容能力**。
-
-例如，如果有一个名为 “sheet.csv” 的文件，以下是其内容。
+For example, if there is a file named "sheet.csv" with the following content:
 
 ```
 avc,"She said,"I like orange juice.""
 ```
 
+This is a common mistake.
 
-
-这是一种常见的错误。
-
-根据 RFC 4180 定义 7，这种表达是错误的，因为第二个字段中的双引号必须通过在它前面加上另一个双引号来转义。
-
-所以正确的内容如下。
+According to Section 7 in RFC 4180, this expression is incorrect because the double quotes in the second field must be escaped with another double quote. The correct content should be:
 
 ```
 avc,"She said,""I like orange juice."""
 ```
 
+If you open this malformed CSV file in Excel, it will be interpreted as:
 
+| avc  | She said,I like orange juice."" |
+| ---- | ------------------------------- |
+|      |                                 |
 
-如果你用Excel打开这个错误的csv文件，它会被识别为
+However, aliceCSV can correctly interpret the author's original intent.
 
-> | avc  | She said,I like orange juice."" |
-> | ---- | ------------------------------- |
-> |      |                                 |
-
-但是，aliceCSV 可以正确识别作者对他们两者的真实意图。
-
-```
+```python
 from aliceCSV import *
 myFile = open("sheet.csv", encoding="utf-8")
 print(parseCSV(myFile))
 ```
 
-
-
-它将输出以下结果。
+It will output the following result:
 
 > [['avc', 'She said,"I like orange juice."']]
 
-不必担心这种兼容会影响正常的读取——举个例子，如果要表达上面Excel读取出的错误的结果，也不应该是那种错误的写法，这种什么都不是的写法只能通过解读程序猜测来读取，至于猜成什么，因文本、解读程序的不同，也是不确定的。
+Don't worry if this compatibility will affect normal parsing—take the above Excel example. If you want to express the incorrect result shown by Excel, you shouldn't use such a wrong format in the first place. This kind of ambiguous format can only be guessed by the parsing program, and the result depends on the text and the interpretation program used, which is uncertain.
 
-aliceCSV只是根据常见错误，选择猜成比较可能是作者真实意图的结果进行输出罢了。
+aliceCSV just chooses to output the result that is most likely the author's true intention based on common mistakes.
 
-## 安装
+------
+
+## Installation
 
 ### Python
 
-您可以使用 pip 来安装它。
+You can use pip to install it:
 
 ```
 pip install aliceCSV
 ```
 
-或从此存储库下载。
+Or download it from this repository.
+
+------
 
 ### C++
 
-下载此存储库提供的
+Download the cpp files provided in this repository.
+
+------
 
 ### JavaScript
 
-使用存储库中提供的`aliceCSV_1.0.1.js`即可
+Use the `aliceCSV_1.0.1.js` file provided in this repository.
 
-## 如何使用
+------
 
+## How to Use
 
+------
 
-### 1. 解析CSV文件内容为二维列表
-
-```
-parseCSV(csv_text, [可选]delimiter)
-```
-
-> csv_text：要解析的CSV文件文本。
-> delimiter : CSV文件的分隔符，可以不填，默认为","。
-
-![image-20241221164314904](assert\1-1.png)
-
-**警告：**
-
-1.如果你发现无法正确处理像这样的CSV文件，这可能是因为在分隔符","后面多了一个空格，所以实际上分隔符是", "。
+### 1. Parse CSV Content into a Two-Dimensional List
 
 ```
-name, gender, height, address
-John, male, 175cm, "123 Main Street, New York, USA"
-Emily, female, 160cm, "45 Oxford Road, London, UK"
-Michael, male, 180cm, "10 Rue de la Paix, Paris, France"
-Sophia, female, 165cm, "25 Alexanderplatz, Berlin, Germany"
+parseCSV(csv_text, [optional]delimiter)
 ```
 
+> `csv_text`: The text of the CSV file to be parsed.
+> `delimiter`: The delimiter of the CSV file. Optional, default is `","`.
 
+------
 
-如果您修复它或了解更多信息，您可以转到第四部分 [**4.将 CSV 文件转换为其他格式**](https://github.com/Alicedrop/aliceCSV/blob/main/README.md#4convert-csv-files-into-other-formats) .
+### 2. Parse a Specific Line of a CSV File
 
-
-
-### 2. 解析CSV文件的其中一行
-
-用户可使用软件的parseLine函数来解析CSV文件的单独某一行。 
+Users can use the `parseLine` function to parse a specific line of a CSV file.
 
 ```
 parseLine(line, delimiter)
 ```
 
-> line：CSV文件某一行的文本。
-> delimiter：解析时选择的分隔符。可以不填，默认为”,”。
+> `line`: The text of a specific line in the CSV file.
+> `delimiter`: The delimiter to use during parsing. Optional, default is `","`.
+
+------
+
+### 3. Write a Table to a CSV File
+
+The `writeCSV` function can save a table represented as a two-dimensional list into a CSV file.
+
+![image-20241221164739331](assert/3-1.png)
+
+**Note: Due to differences in I/O operations across programming languages, there are slight differences among implementations:**
+
+**In the Python and C++ implementations, the `writeCSV` function will write directly to the disk.**
+
+**But in JavaScript one, it returns a blob object representing the CSV file.**
 
 
 
-### 3. 将表格输出为CSV文件
-
-writeCSV函数可以将二维列表表示的表格保存为CSV文件。
-
-![image-20241221164739331](assert/3-1.png) 
-
-注意，由于各编程语言的IO逻辑不同，不同实现存在一定差异：
-
-与Python和C++实现不同，JavaScript实现的writeCSV函数返回一个blob形式的CSV文件，而不是直接写入到硬盘。
-
-函数需要的参数和对应的含义如下： 
-
-```
-writeCSV(sheet, [可选]output_path, [可选]delimiter, [可选]sheet_encoding, [可选]line_break)
-```
-
-> sheet：需要保存的二维列表。
-> output_path: 输出路径。可以不填，默认为在当前目录下创建"output.csv"。
-> sheet_encoding: 输出文件的编码格式。可以不填，默认为“utf-8"。
-> delimiter: CSV文件所使用的分隔符。可以不填，默认为","。
-> line_break: 输出文件使用的换行符。可以不填，默认为"\n"。
-
-### 4. 修复CSV文件中出现的长度问题
-
-由于种种原因，一些CSV文件每行的字段数不一样，这不符合常用的RFC 4180规范，在一些场景下可能会引发问题。用户可以使用软件的fixLineLength函数使得每行字段数相同。
-
-函数需要的参数和对应的含义如下： 
+The parameters required for the function and their meanings are as follows:
 
 ```
-fixLineLength (csv_sheet)
+writeCSV(sheet, [optional]output_path, [optional]delimiter, [optional]sheet_encoding, [optional]line_break)
 ```
 
-> csv_sheet：二维列表表示的表格。
+> `sheet`: The two-dimensional list to be saved.
+> `output_path`: The output path. Optional, default is creating `"output.csv"` in the current directory.
+> `sheet_encoding`: The encoding format of the output file. Optional, default is `"utf-8"`.
+> `delimiter`: The delimiter used in the CSV file. Optional, default is `","`.
+> `line_break`: The line break style used in the output file. Optional, default is `"\n"`.
 
-例如，下面这个表格各行长度不同。
+------
+
+### 4. Fix Length Issues in CSV Files
+
+For various reasons, some CSV files may have rows with varying numbers of fields, which does not conform to the common RFC 4180 standard and may cause issues in certain scenarios. Users can use the `fixLineLength` function to make all rows have the same number of fields.
+
+The parameters required for the function and their meanings are as follows:
+
+```
+fixLineLength(csv_sheet)
+```
+
+> `csv_sheet`: The table represented as a two-dimensional list.
+
+For example, consider a table where rows have different lengths:
 
 ![image-20241221165142136](assert/4-1.png) 
 
-我们可以使用fixLineLength进行修复
+You can use `fixLineLength` to fix it:
 
 ![image-20241221165155778](assert/4-2.png)
 
-把结果保存为CSV文件再打开，可以看到表格的每一行长度都变为了5。
+Save the result as a CSV file and open it. You will see that each row now has the same number of fields.
 
 ![image-20241221165203548](assert/4-3.png) 
 
+------
 
+### 5. Format Conversion
 
-### 5. 格式转换
+The `fixCSV` function can save CSV files in various compatible formats, including changing the delimiter, file encoding, line break style, etc.
 
-软件的fixCSV函数可以把CSV文件保存为各种兼容格式的CSV文件，包括改为使用其他分隔符、文件编码、换行符等。
-
-例如，对于一个分隔符是”.”的CSV文件，可以使用fixCSV函数把它转换为常见的以逗号为分隔符的CSV文件。
+For example, for a CSV file with a delimiter of `"."`, you can use the `fixCSV` function to convert it into a commonly used CSV file with commas as the delimiter.
 
 ![image-20241221165533896](assert/5-1.png) 
 
-如图，使用Python实现的fixCSV函数，输入源文件地址和源文件分隔符，即可在当前路径输出转换成的“output.csv”。
+As shown, using the Python implementation of the `fixCSV` function, input the source file path and source file delimiter to output the converted `"output.csv"` file in the current path.
 
 ![image-20241221165542191](assert/5-2.png)
 
-**注意，由于各编程语言IO操作的逻辑不同，不同实现可能会有一定差异。**
+**Note: Due to variations in the logic of I/O operations across programming languages, implementations may differ slightly.**
 
-**在JavaScript实现中，fixCSV函数返回的是一个Promise，用户解析这个Promise即可得到blob形式的转换后的文件。**
+**In the JavaScript implementation, the `fixCSV` function returns a Promise, and users can resolve this Promise to obtain a blob object representing the converted file.**
 
-输入两个参数即可进行简单转换。可以根据实际需要输入更多参数。
 
-函数需要的参数和对应的含义如下：
+
+The function requires two parameters for simple conversion. More parameters can be added as needed.
 
 ```
- fixCSV(path, [可选]output_path,[可选]origin_delimiter, [可选]target_delimiter, [可选]origin_encoding)
+fixCSV(path, [optional]output_path, [optional]origin_delimiter, [optional]target_delimiter, [optional]origin_encoding)
 ```
 
-> path: 输入的初始CSV文件路径.
+> `path`: The path to the input CSV file.   
 >
-> output_path: 输出生成的CSV文件的路径。可以不填，默认为“output.csv”。JavaScript实现没有这一参数。
+> `output_path`: The path to the generated CSV file. Optional, defaults to `"output.csv"`. This parameter is not available in the JavaScript implementation.    
 >
-> origin_delimiter：原始CSV文件的分隔符。可以省略，默认值为“,”。
+> `origin_delimiter`: The delimiter used in the original CSV file. Optional, defaults to `","`.    
 >
-> target_delimiter：输出文件中使用的分隔符。可以省略，默认值为“,”。
+> `target_delimiter`: The delimiter to be used in the output file. Optional, defaults to `","`.  
 >
-> origin_encoding：原始文件的编码。可以省略，默认值为“utf-8”。
+> `origin_encoding`: The encoding of the original file. Optional, defaults to `"utf-8"`.   
 >
-> target_encoding：输出文件中使用的编码。可以省略，默认值为“utf-8”。
+> `target_encoding`: The encoding to be used in the output file. Optional, defaults to `"utf-8"`.  
 >
-> target_line_break：输出文件的换行符。可以省略，默认值为“\n”。
+>  `target_line_break`: The line break style for the output file. Optional, defaults to `"\n"`.  
 
 
 
+------
 
+## License
 
-## 许可证
+This project originated from [aliceCSV v0.1.3](https://github.com/Alice-Drop/aliceCSV).
 
-
-
-此存储库中的 aliceCSV 代码使用 MIT 许可证，请参阅我们的文件。`LICENSE`
+The aliceCSV code in this repository is licensed under the MIT License. Please refer to the `LICENSE` file for details.
