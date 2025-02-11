@@ -6,7 +6,11 @@
 
 This module allows you to operate **CSV files as two-dimensional tables** easily and convert them into other formats with minimal effort. It is lightweight, has no dependencies, and is more intuitive compared to the built-in CSV libraries in Python and other languages.
 
-------
+
+
+You can try out our online demo, which is a tool for reading and converting CSV table formats: [Web Link](https://alicecsv.alicedrop.site/demo.html)
+
+
 
 ## Overview
 
@@ -16,7 +20,7 @@ The software is implemented in **C++**, **Python**, and **JavaScript**, correspo
 
 The software has the capability to handle non-standard CSV files and is optimized for common errors encountered when handling CSV files. It strives to **restore the original intent of the author** when a file contains formatting errors.
 
-------
+
 
 ## Features
 
@@ -58,7 +62,7 @@ Don't worry if this compatibility will affect normal parsing—take the above Ex
 
 aliceCSV just chooses to output the result that is most likely the author's true intention based on common mistakes.
 
-------
+
 
 ## Installation
 
@@ -72,23 +76,23 @@ pip install aliceCSV
 
 Or download it from this repository.
 
-------
+
 
 ### C++
 
 Download the cpp files provided in this repository.
 
-------
+
 
 ### JavaScript
 
 Use the `aliceCSV_1.0.1.js` file provided in this repository.
 
-------
+
 
 ## How to Use
 
-------
+
 
 ### 1. Parse CSV Content into a Two-Dimensional List
 
@@ -115,7 +119,7 @@ Sophia, female, 165cm, "25 Alexanderplatz, Berlin, Germany"
 
 You can learn more about it in  [**5. Format Conversion**](#5. Format Conversion).
 
-------
+
 
 ### 2. Parse a Specific Line of a CSV File
 
@@ -128,7 +132,7 @@ parseLine(line, delimiter)
 > `line`: The text of a specific line in the CSV file.
 > `delimiter`: The delimiter to use during parsing. Optional, default is `","`.
 
-------
+
 
 ### 3. Write a Table to a CSV File
 
@@ -156,7 +160,7 @@ writeCSV(sheet, [optional]output_path, [optional]delimiter, [optional]sheet_enco
 > `delimiter`: The delimiter used in the CSV file. Optional, default is `","`.
 > `line_break`: The line break style used in the output file. Optional, default is `"\n"`.
 
-------
+
 
 ### 4. Fix Length Issues in CSV Files
 
@@ -182,7 +186,7 @@ Save the result as a CSV file and open it. You will see that each row now has th
 
 ![image-20241221165203548](assert/4-3.png) 
 
-------
+
 
 ### 5. Format Conversion
 
@@ -223,8 +227,6 @@ fixCSV(path, [optional]output_path, [optional]origin_delimiter, [optional]target
 >  `target_line_break`: The line break style for the output file. Optional, defaults to `"\n"`.  
 
 
-
-------
 
 ## License
 
