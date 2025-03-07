@@ -1,6 +1,6 @@
 # aliceCSV -- Simple and Cross-Platform CSV Module
 
-[中文版 / Chinese Version](/README-zh.md)
+English | [简体中文](/README-zh.md)
 
 **aliceCSV** is a simple, user-friendly, and cross-platform CSV module.
 
