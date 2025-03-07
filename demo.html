@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>AliceCSV CSV Monitor</title>
+    <link rel="icon" href="icon/icon2.png">
+    <style>
+        ._invisible{
+            display: none;
+        }
+        label{
+            user-select: none;
+        }
+        p{
+            user-select: none;
+        }
+
+
+        #managePanel{
+            margin: 10px auto;
+            width: 90%;
+            max-width: 875px;
+            height: auto;
+            background-color: rgba(72, 178, 243, 0.8);
+            backdrop-filter: blur(10px);
+            color: aliceblue;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            position: fixed;
+            top: 0;
+            left: 25%;
+
+            border-radius: 10px;
+            box-shadow: 4px 4px 10px 3px rgba(180, 180, 180, 0.7);
+
+        }
+
+        #managementContainer{
+            margin: 15px auto;
+            width: 80%;
+        }
+
+        #sheetContainer{
+
+            margin: 300px auto auto 0;
+        }
+
+        #div-ReadAsSheet{
+            border: 1px solid gray;
+            border-radius: 8px;
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .functionDescription{
+            margin: 0;
+        }
+
+        #customDelimiterFiller{
+            width: 10%;
+        }
+
+        #myFilePicker{
+            width: 200px;
+            
+        }
+
+        /* 导出部分 */
+
+
+        #div-convertCsv{
+            border: 1px solid gray;
+            height: auto;
+        }
+
+        .customInput{
+            width: 70px;
+        }
+
+        #outputOptionsPlacer{
+            margin: 10px;
+        }
+
+        #btn-csvOutput{
+            width: 60px;
+            height: 48px;
+        }
+
+
+        /* 表格部分 */
+        #mySheet {
+            margin: 0 auto;
+        }
+
+        #mySheet tr{
+            height: 24px;
+        }
+
+        #mySheet td{
+            border: 1px solid black;
+            min-height: 20px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="managePanel">
+        <div id="managementContainer">
+            <h3 style="margin-left: 20px;margin-top: 0">AliceCSV CSV在线检视器</h3>
+            <p class="functionDescription">加载csv</p>
+            <div id="div-ReadAsSheet">
+                <input type="file" id="myFilePicker">
+                <label for="delimiterSelector">分隔符：</label>
+                <select name="delimiterSelector" id="delimiterSelector" onchange="changeDelimiterFiller(event)">
+                    <option value=','>逗号 ,</option>
+                    <option value=".">小数点 .</option>
+                    <option value="_custom">自定义...</option>
+                </select>
+                <input type="text" id="customDelimiterFiller" class="_invisible customInput">
+
+                <label for="delimiterSelector">文字编码：</label>
+                <select name="delimiterSelector" id="encodingSelector" onchange="changeEncodingFiller()">
+                    <option value='UTF-8'>UTF-8</option>
+                    <option value="_custom">自定义...</option>
+                </select>
+                <input type="text" id="customEncodingFiller" class="_invisible customInput">
+
+                <button id="btn-readCSV" onclick="readCSV_demo()">读取csv</button>
+            </div>
+            <br>
+            <p class="functionDescription" >转换格式并导出</p>
+            <div id="div-convertCsv" >
+                <table  id="outputOptionsPlacer">
+                    <tr>
+                        <td>
+                            <label for="targetDelimiterSelector">分隔符：</label>
+                            <select id="targetDelimiterSelector" onchange="changeTargetDelimiterFiller()">
+
+                                <option value=','>逗号 ,</option>
+                                <option value=".">小数点 .</option>
+                                <option value="_custom">自定义...</option>
+                            </select>
+                        </td>
+                        <td>
+                            <label for="targetDelimiterSelector">文字编码：</label>
+                            <select id="targetEncodeSelector" onchange="changeTargetEncodingFiller()">
+                                <option value='UTF-8'>UTF-8</option>
+                                <option value="_custom">自定义...</option>
+
+                            </select>
+                        </td>
+                        <td>
+                            <label for="targetDelimiterSelector">换行符：</label>
+                            <select id="targetLineBreakSelector" onchange="changeTargetLineBreakFiller()">
+                                <option value="n">\n</option>
+                                <option value="rn">\r\n</option>
+                                <option value="_custom">自定义...</option>
+                            </select>
+                        </td>
+                        <td>
+                            <label for="ifFixLengthCheckBox">修复字段数量问题：</label>
+                            <input type="checkbox" id="ifFixLengthCheckBox">
+                        </td>
+                        <td rowspan="2">
+                            <button id="btn-csvOutput" onclick="fixCSV_demo()">导出</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="_invisible customInput" id="targetDelimiterFiller"></td>
+                        <td><input type="text" class="_invisible customInput" id="targetEncodingFiller"></td>
+                        <td><input type="text" class="_invisible customInput" id="targetLineBreakFiller"></td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="sheetContainer">
+        <table id="mySheet"></table>
+    </div>
+
+    <script src="aliceCSV_1.0.1.js"></script>
+
+    <script>
+
+        /* 获取各种自定义信息 */
+        function getOriginalDelimiter(){
+            let delimiterSelector = document.getElementById("delimiterSelector");
+            if (delimiterSelector.value !== "_custom"){
+                return delimiterSelector.value
+            }else {
+                return document.getElementById("customDelimiterFiller").value
+            }
+        }
+
+        function getOriginalEncoding(){
+            // 根据GUI获取原始编码。如果选自定义则是从文本框中拿。因此需要注意
+            let encodingSelector = document.getElementById("encodingSelector");
+            if (encodingSelector.value !== "_custom"){
+                return encodingSelector.value
+            }else {
+                return document.getElementById("customEncodingFiller").value
+            }
+        }
+
+        function getTargetDelimiter(){
+
+            let targetDelimiterSelector = document.getElementById("targetDelimiterSelector");
+            if (targetDelimiterSelector.value === "," || targetDelimiterSelector.value === "."){
+                return targetDelimiterSelector.value;
+            }else {
+                return document.getElementById("targetDelimiterFiller").value;
+            }
+        }
+
+        function getTargetEncoding(){
+            let targetEncodingSelector = document.getElementById("targetEncodeSelector");
+            if (targetEncodingSelector.value === "UTF-8"){
+                return targetEncodingSelector.value;
+            }else {
+                return document.getElementById("targetEncodingFiller").value;
+            }
+        }
+
+        function getTargetLineBreak(){
+            let targetLineBreakSelector = document.getElementById("targetLineBreakSelector");
+            if (targetLineBreakSelector.value === "n" || targetLineBreakSelector.value === "rn"){
+                return targetLineBreakSelector.value;
+            }else {
+                return document.getElementById("targetLineBreakFiller").value;
+            }
+        }
+
+        function getIfFixLength(){
+            let IfFixLengthCheck = document.getElementById("ifFixLengthCheckBox");
+            return IfFixLengthCheck.checked;
+        }
+
+
+        /*  下拉框选择事件处理函数 */
+
+        function changeDelimiterFiller(event){  // 原始分隔符
+            let delimiterSelector = document.getElementById("delimiterSelector");
+            let customDelimiterFiller = document.getElementById("customDelimiterFiller");
+            if (delimiterSelector.value === "_custom"){
+                customDelimiterFiller.classList.remove("_invisible")
+            }else {
+                customDelimiterFiller.classList.add("_invisible")
+            }
+
+        }
+
+        function changeEncodingFiller(){
+            let customEncodingFiller = document.getElementById("customEncodingFiller");
+            if (getOriginalEncoding() === "UTF-8"){  // 不是自定义
+                customEncodingFiller.classList.add("_invisible")
+            }else{
+                customEncodingFiller.classList.remove("_invisible")
+            }
+        }
+
+        function changeTargetDelimiterFiller(){
+            let customTargetDelimiterFiller = document.getElementById("targetDelimiterFiller");
+            if (getTargetDelimiter() === "," || getTargetDelimiter() === "."){
+                customTargetDelimiterFiller.classList.add("_invisible")
+            }else {
+                customTargetDelimiterFiller.classList.remove("_invisible")
+            }
+        }
+
+        function changeTargetEncodingFiller(){
+            let targetEncodingFiller = document.getElementById("targetEncodingFiller");
+            if (getTargetEncoding() === "UTF-8"){
+                targetEncodingFiller.classList.add("_invisible")
+            }else {
+                targetEncodingFiller.classList.remove("_invisible")
+            }
+        }
+
+        function changeTargetLineBreakFiller(){
+            let targetLineBreakFiller = document.getElementById("targetLineBreakFiller");
+            if (getTargetLineBreak() === "n" || getTargetLineBreak() === "rn"){
+                targetLineBreakFiller.classList.add("_invisible")
+            }else {
+                targetLineBreakFiller.classList.remove("_invisible")
+            }
+        }
+
+
+
+
+
+        /*  应用功能部分  */
+
+        function drawSheet(table){
+            let mySheet = document.getElementById("mySheet");
+            mySheet.innerHTML = "";
+            for (let row of table){
+                let newRow = document.createElement("tr")
+
+                for (let col of row){
+                    let newCol = document.createElement("td")
+                    newCol.innerText = col
+                    newRow.appendChild(newCol)
+                }
+                mySheet.appendChild(newRow)
+            }
+        }
+
+        function parseCSV_experimental() {
+            let myFilePicker = document.getElementById("myFilePicker")
+            if (myFilePicker.files.length === 0) {
+                alert("未选中文件！")
+            } else {
+                let my_file = myFilePicker.files[0];
+                let reader = new FileReader()
+                reader.onload =  function () {
+                    console.log("csvText:\n"+reader.result);
+                    console.log(parseCSV(reader.result));
+                }
+                reader.onerror = (error) => {
+                    console.log("文件读取出错！\n"+error)
+                }
+                reader.readAsText(my_file)
+
+            }
+        }
+
+        function readCSV_demo(){
+            let myFilePicker = document.getElementById("myFilePicker")
+            if (myFilePicker.files.length === 0) {
+                alert("未选中文件！")
+            } else {
+                let my_file = myFilePicker.files[0];
+                let reader = new FileReader()
+                reader.onload =  function () {
+                    let csvText = reader.result
+                    let table = parseCSV(csvText,getOriginalDelimiter())
+                    drawSheet(table)
+                }
+                reader.onerror = (error) => {
+                    console.log("文件读取出错！"+error)
+                }
+                reader.readAsText(my_file,getOriginalEncoding())
+
+            }
+        }
+
+
+        function fixCSV_demo(){
+            let myFilePicker = document.getElementById("myFilePicker")
+            if (myFilePicker.files.length === 0) {
+                alert("未选中文件！")
+            } else {
+                let my_file = myFilePicker.files[0];
+                let returnedPromise = fixCSV(my_file,getOriginalDelimiter(),getTargetDelimiter(),getOriginalEncoding(),getTargetEncoding(),getTargetLineBreak(),getIfFixLength())
+                returnedPromise.then(function (result){
+                    let newLink = document.createElement("a");
+                    newLink.href = URL.createObjectURL(result)
+                    newLink.download = my_file.name
+                    newLink.click()
+                })
+            }
+        }
+    </script>
+</body>
+</html>
