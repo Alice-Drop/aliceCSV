@@ -1,0 +1,6 @@
+# ninja log v5
+3	227	7355899911883422	CMakeFiles/aliceCSV.dir/aliceCSV.c.obj	70907ee58ef1779d
+78	162	7423290884494340	aliceCSV.exe	4de176c6840fe693
+1	68	7423290679421904	CMakeFiles/aliceCSV.dir/c/AI/aliceCSV.c.obj	20067df91165eeda
+1	78	7423290883690670	CMakeFiles/aliceCSV.dir/c/1.c.obj	b3a306fc52e68dbb
+2	81	7423290432878291	CMakeFiles/aliceCSV.dir/c/tryAlice.c.obj	8a6490c1512068c0

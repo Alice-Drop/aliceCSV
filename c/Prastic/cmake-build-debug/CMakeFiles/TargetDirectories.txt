@@ -1,0 +1,3 @@
+D:/CaliceCSV/c/Prastic/cmake-build-debug/CMakeFiles/Prastic.dir
+D:/CaliceCSV/c/Prastic/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/CaliceCSV/c/Prastic/cmake-build-debug/CMakeFiles/rebuild_cache.dir
